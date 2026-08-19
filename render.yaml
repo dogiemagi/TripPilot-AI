@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: trippilot-ai
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
