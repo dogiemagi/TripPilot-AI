@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from .models import PlanPdfRequest, RankRequest, TravelRequest
-from .services import compose_answer, detect_intent, get_memories, initialize_db, retrieve, score_candidate, store_memory
+from .services import build_trip_plan, compose_answer, detect_intent, get_memories, initialize_db, retrieve, score_candidate, store_memory
 
 ALLOWED_MEDIA = {"image": {"image/jpeg", "image/png", "image/webp"}, "audio": {"audio/mpeg", "audio/wav", "audio/x-wav", "audio/mp4"}, "video": {"video/mp4", "video/webm"}}
 
@@ -37,13 +37,21 @@ def health():
 @app.post("/v1/travel/query")
 def travel_query(request: TravelRequest):
     intent, intent_confidence = detect_intent(request.text)
-    context = retrieve(f"{request.text} {request.detected_landmark or ''}")
     memories = get_memories(request.user_id)
+    conversation = " ".join([request.text, *memories])
+    context = retrieve(f"{conversation} {request.detected_landmark or ''}")
     answer = compose_answer(request.text, intent, request.detected_landmark, context, memories, request.profile)
+    final_plan = build_trip_plan(conversation, context)
+    ready_to_download = final_plan is not None
+    if final_plan:
+        intent = "itinerary_generation"
+        answer, plan_context = final_plan
+    else:
+        plan_context = [f"{item['topic']}: {item['content']}" for item in context]
     confidence = round(min(.95, (.65 * intent_confidence) + (.10 * bool(context)) + (.15 * bool(request.detected_landmark)) + (.10 * bool(request.text))), 2)
     store_memory(request.user_id, "session", request.text)
     store_memory(request.user_id, "response", answer)
-    return {"answer": answer, "intent": intent, "confidence": confidence, "requires_clarification": confidence < .60, "retrieved_context": context, "memory_used": len(memories)}
+    return {"answer": answer, "intent": intent, "confidence": confidence, "requires_clarification": confidence < .60, "ready_to_download": ready_to_download, "plan_context": plan_context, "retrieved_context": context, "memory_used": len(memories)}
 
 
 @app.post("/v1/decision/rank")

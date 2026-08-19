@@ -1,7 +1,6 @@
 import json
 import re
 import sqlite3
-from collections import Counter
 from pathlib import Path
 
 from .models import Candidate, TravelerProfile
@@ -80,7 +79,39 @@ def compose_answer(text: str, intent: str, landmark: str | None, context: list[d
     elif intent == "weather_query":
         answer = "I can help interpret a forecast, but live weather needs a connected weather provider. Share the city and dates for a packing checklist."
     else:
-        answer = f"I can help with {subject}. Tell me your dates, budget, and travel style and I’ll turn this into a tailored plan."
+        answer = f"Great choice - I can build a trip to {subject}. Reply with your departure date, total budget, number of days, and preferred transport (flight, train, bus, or car)."
     if landmark:
         answer = f"I identified the supplied context as **{landmark}**. {answer}"
     return answer
+
+
+def build_trip_plan(conversation: str, context: list[dict]) -> tuple[str, list[str]] | None:
+    """Turn a short planning conversation into a transparent, offline itinerary."""
+    text = conversation.lower()
+    destinations = ("paris", "dubai", "goa")
+    destination = next((name.title() for name in destinations if name in text), None)
+    budget_match = re.search(r"(?:₹|rs\.?|inr)?\s*(\d[\d,]{3,})", conversation, re.IGNORECASE)
+    date_match = re.search(r"\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b", conversation)
+    transport = next((mode for mode in ("flight", "train", "bus", "car") if re.search(rf"\b{mode}\b", text)), None)
+    if not (destination and budget_match and date_match and transport):
+        return None
+
+    budget = budget_match.group(1)
+    highlights = {
+        "Paris": ["Eiffel Tower and Trocadéro", "Louvre and the Seine", "Montmartre and a local bistro"],
+        "Dubai": ["Old Dubai and Al Fahidi", "Burj Khalifa and Dubai Mall", "Jumeirah Beach or a desert evening"],
+        "Goa": ["A relaxed beach morning", "Fontainhas heritage walk", "A coastal café and sunset"],
+    }[destination]
+    plan = (
+        f"Trip brief: {destination}\n"
+        f"Departure date: {date_match.group(0)}\n"
+        f"Budget ceiling: ₹{budget}\n"
+        f"Preferred transport: {transport.title()}\n\n"
+        f"Day 1 - {highlights[0]}\nStart with the main landmark, then choose a nearby meal and keep the evening flexible.\n\n"
+        f"Day 2 - {highlights[1]}\nBook your anchor attraction in advance and group nearby sights to reduce travel time.\n\n"
+        f"Day 3 - {highlights[2]}\nUse this day for neighbourhood exploration, food, and a low-pressure finish.\n\n"
+        "Budget approach\nReserve roughly 45% for travel and stay, 30% for activities and food, and keep 25% as a buffer. Compare live prices before booking."
+    )
+    sources = [f"Destination: {destination}", f"Departure: {date_match.group(0)}", f"Budget: ₹{budget}", f"Transport: {transport.title()}"]
+    sources.extend(f"{item['topic']}: {item['content']}" for item in context)
+    return plan, sources
