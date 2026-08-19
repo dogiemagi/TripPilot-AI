@@ -28,3 +28,9 @@ class Candidate(BaseModel):
 
 class RankRequest(BaseModel):
     candidates: list[Candidate] = Field(min_length=1, max_length=20)
+
+
+class PlanPdfRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=160)
+    answer: str = Field(min_length=1, max_length=12000)
+    context: list[str] = Field(default_factory=list, max_length=8)

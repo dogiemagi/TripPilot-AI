@@ -22,13 +22,16 @@
           <button class="scenario" data-query="What is the weather like and what should I pack for a trip?"><i>☀️</i><span><b>Pack & Prepare</b><small>Weather · travel essentials</small></span></button>
         </nav>
         <div class="section-label upload-label">▰ &nbsp;ADD CONTEXT</div>
-        <label class="dropzone" for="file-input"><span>⌁</span><b>Drop travel media</b><small>Photos · Audio · Video</small><input id="file-input" type="file" accept="image/*,audio/*,video/*" hidden></label>
+        <div class="quick-upload"><button type="button" data-upload="image">▧ Add photo</button><button type="button" data-upload="audio">◉ Upload audio</button><button type="button" data-upload="video">▸ Add video</button></div>
+        <label class="dropzone" for="file-input"><span>⌁</span><b>Drop travel media</b><small>Photo · audio · video</small><input id="file-input" type="file" accept="image/*,audio/*,video/*" hidden></label>
         <div id="upload-status" class="upload-status">No media attached</div>
         <div class="system-card"><span>Travel memory</span><b>Active</b><span>Knowledge base</span><b>Local RAG</b><span>Inference</span><b>Confidence-aware</b></div>
       </aside>
       <section class="workspace">
         <header class="topbar"><div><h1>Multimodal Travel Intelligence</h1><p>Plan, explore, and decide with context-aware AI.</p></div><label class="router">Route <select aria-label="Domain router"><option>Auto-detect</option><option>Itinerary</option><option>Hotels</option><option>Food</option></select></label></header>
         <div class="content">
+          <div class="mode-tabs" role="tablist"><button class="mode-tab active" data-mode="text" role="tab">⌁ Text</button><button class="mode-tab" data-mode="audio" role="tab">◉ Voice</button><button class="mode-tab" data-mode="image" role="tab">▧ Image</button><button class="mode-tab" data-mode="video" role="tab">▸ Video</button></div>
+          <div class="mode-help" id="mode-help">Ask a travel question in text. Add context from the sidebar whenever you need it.</div>
           <div class="welcome" id="welcome"><span class="orb">✦</span><p class="eyebrow">YOUR TRAVEL COPILOT</p><h2>Where will curiosity take you?</h2><p>Ask about a destination, add media, or start with a trip scenario.</p></div>
           <article class="result-card" id="result-card" hidden>
             <div class="result-meta"><span id="intent-badge">✦ INTENT: GENERAL</span><span id="model-badge">◈ MODEL: trippilot-core</span><span id="confidence-badge">● 0% confidence</span></div>
@@ -37,10 +40,10 @@
             <h2 id="result-title">Your travel brief</h2>
             <div id="answer" class="answer"></div>
             <section class="evidence"><b>◈ RETRIEVED CONTEXT</b><ul id="evidence-list"></ul></section>
-            <button class="details" type="button">▸ View decision and confidence metadata</button>
+            <div class="result-actions"><button class="details" type="button">▸ View decision and confidence metadata</button><button class="pdf-button" type="button" id="download-pdf">⇩ Download plan PDF</button></div>
           </article>
         </div>
-        <form class="composer" id="query-form"><div class="input-wrap"><textarea id="query" rows="1" maxlength="4000" placeholder="Ask about your next journey, a hotel, or a landmark…"></textarea><span class="hint">⌘ Enter</span></div><button type="submit" id="analyze">Plan trip <span>→</span></button></form>
+        <form class="composer" id="query-form"><button class="mic" type="button" id="mic-button" title="Ask with microphone" aria-label="Ask with microphone" hidden>◉</button><div class="input-wrap"><textarea id="query" rows="1" maxlength="4000" placeholder="Ask about your next journey, a hotel, or a landmark…"></textarea><span class="hint">⌘ Enter</span></div><button class="attachment" type="button" id="attachment-button" title="Add media">＋</button><button type="submit" id="analyze">Plan trip <span>→</span></button></form>
       </section>
     </main>
     <script src="/static/app.js"></script>

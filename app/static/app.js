@@ -1,42 +1,10 @@
-const form = document.querySelector('#query-form');
-const query = document.querySelector('#query');
-const card = document.querySelector('#result-card');
-const welcome = document.querySelector('#welcome');
-const button = document.querySelector('#analyze');
-const upload = document.querySelector('#file-input');
-let landmark = null;
-
-document.querySelectorAll('.scenario').forEach((item) => item.addEventListener('click', () => {
-  document.querySelectorAll('.scenario').forEach((other) => other.classList.remove('active'));
-  item.classList.add('active'); query.value = item.dataset.query; query.focus();
-}));
-
-upload.addEventListener('change', async () => {
-  const file = upload.files[0]; if (!file) return;
-  const modality = file.type.startsWith('image/') ? 'image' : file.type.startsWith('audio/') ? 'audio' : file.type.startsWith('video/') ? 'video' : null;
-  const status = document.querySelector('#upload-status');
-  if (!modality) { status.textContent = 'Please choose an image, audio, or video file.'; return; }
-  status.textContent = `Processing ${file.name}…`;
-  const body = new FormData(); body.append('file', file);
-  try { const response = await fetch(`/v1/multimodal/${modality}`, { method: 'POST', body }); if (!response.ok) throw new Error(); const data = await response.json(); landmark = modality === 'image' ? 'uploaded travel image' : null; status.textContent = `✓ ${data.filename} attached · ${modality}`; }
-  catch { status.textContent = 'Could not process this file. Please try another file.'; }
-});
-
-form.addEventListener('submit', async (event) => {
-  event.preventDefault(); const text = query.value.trim(); if (!text) { query.focus(); return; }
-  button.disabled = true; button.textContent = 'Thinking…';
-  try {
-    const response = await fetch('/v1/travel/query', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:'web-traveler',text,detected_landmark:landmark})});
-    if (!response.ok) throw new Error(); const data = await response.json();
-    welcome.hidden = true; card.hidden = false;
-    document.querySelector('#answer').textContent = data.answer;
-    document.querySelector('#result-title').textContent = data.intent.replaceAll('_',' ');
-    document.querySelector('#intent-badge').textContent = `✦ INTENT: ${data.intent.replaceAll('_',' ').toUpperCase()}`;
-    document.querySelector('#confidence-badge').textContent = `● ${Math.round(data.confidence * 100)}% confidence`;
-    const evidence = document.querySelector('#evidence-list'); evidence.innerHTML = '';
-    (data.retrieved_context.length ? data.retrieved_context : [{topic:'Travel guidance',content:'Tailor this plan with dates, budget, and travel style.'}]).forEach((item) => { const li = document.createElement('li'); li.textContent = `${item.topic} — ${item.content}`; evidence.appendChild(li); });
-  } catch { alert('TripPilot could not reach the service. Please try again.'); }
-  finally { button.disabled = false; button.innerHTML = 'Plan trip <span>→</span>'; }
-});
-
-query.addEventListener('keydown', (event) => { if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') form.requestSubmit(); });
+const form=document.querySelector('#query-form'),query=document.querySelector('#query'),card=document.querySelector('#result-card'),welcome=document.querySelector('#welcome'),button=document.querySelector('#analyze'),upload=document.querySelector('#file-input'),mic=document.querySelector('#mic-button'),attachment=document.querySelector('#attachment-button');let landmark=null,activeMode='text',latestPlan=null;
+const config={text:{placeholder:'Ask about your next journey, a hotel, or a landmark…',help:'Ask a travel question in text. Add context from the sidebar whenever you need it.'},audio:{placeholder:'Speak your travel question or upload an audio recording…',help:'Use the microphone to ask directly, or choose an existing audio recording.'},image:{placeholder:'Add an image, then ask what you would like to know about it…',help:'Upload a travel photo, landmark, hotel, or food image and ask a question about it.'},video:{placeholder:'Add a video, then ask for a travel summary or recommendations…',help:'Upload a short travel video, then ask TripPilot to use it as context.'}};
+function choose(mode){upload.accept={image:'image/*',audio:'audio/*',video:'video/*'}[mode]||'image/*,audio/*,video/*';upload.click()}
+function setMode(mode){activeMode=mode;document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===mode));query.placeholder=config[mode].placeholder;document.querySelector('#mode-help').textContent=config[mode].help;mic.hidden=mode!=='audio';if(mode==='image'||mode==='video')choose(mode);if(mode==='audio')query.focus()}
+document.querySelectorAll('.mode-tab').forEach(t=>t.addEventListener('click',()=>setMode(t.dataset.mode)));document.querySelectorAll('[data-upload]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.upload)));attachment.addEventListener('click',()=>choose(activeMode==='text'?'image':activeMode));
+document.querySelectorAll('.scenario').forEach(item=>item.addEventListener('click',()=>{document.querySelectorAll('.scenario').forEach(o=>o.classList.remove('active'));item.classList.add('active');query.value=item.dataset.query;query.focus()}));
+upload.addEventListener('change',async()=>{const file=upload.files[0];if(!file)return;const modality=file.type.startsWith('image/')?'image':file.type.startsWith('audio/')?'audio':file.type.startsWith('video/')?'video':null,status=document.querySelector('#upload-status');if(!modality){status.textContent='Please choose an image, audio, or video file.';return}status.textContent=`Processing ${file.name}…`;const body=new FormData();body.append('file',file);try{const res=await fetch(`/v1/multimodal/${modality}`,{method:'POST',body});if(!res.ok)throw Error();const data=await res.json();landmark=modality==='image'?'uploaded travel image':modality==='video'?'uploaded travel video':'uploaded audio request';status.textContent=`✓ ${data.filename} attached · ${modality}`}catch{status.textContent='Could not process this file. Please try another file.'}});
+mic.addEventListener('click',()=>{const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition){alert('Voice input needs Chrome or another browser with speech recognition enabled. You can still upload an audio file.');return}const rec=new Recognition();rec.lang='en-US';rec.interimResults=true;mic.classList.add('recording');mic.textContent='■';query.placeholder='Listening…';rec.onresult=e=>query.value=Array.from(e.results).map(r=>r[0].transcript).join('');rec.onerror=()=>document.querySelector('#mode-help').textContent='Microphone access was unavailable. Check browser permissions or upload audio instead.';rec.onend=()=>{mic.classList.remove('recording');mic.textContent='◉';query.placeholder=config.audio.placeholder;if(query.value.trim())query.focus()};rec.start()});
+form.addEventListener('submit',async e=>{e.preventDefault();const text=query.value.trim();if(!text){query.focus();return}button.disabled=true;button.textContent='Thinking…';try{const res=await fetch('/v1/travel/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:'web-traveler',text,detected_landmark:landmark})});if(!res.ok)throw Error();const data=await res.json();welcome.hidden=true;card.hidden=false;document.querySelector('#answer').textContent=data.answer;document.querySelector('#result-title').textContent=data.intent.replaceAll('_',' ');document.querySelector('#intent-badge').textContent=`✦ INTENT: ${data.intent.replaceAll('_',' ').toUpperCase()}`;document.querySelector('#confidence-badge').textContent=`● ${Math.round(data.confidence*100)}% confidence`;const evidence=document.querySelector('#evidence-list');evidence.innerHTML='';const context=data.retrieved_context.length?data.retrieved_context:[{topic:'Travel guidance',content:'Tailor this plan with dates, budget, and travel style.'}];context.forEach(item=>{const li=document.createElement('li');li.textContent=`${item.topic} — ${item.content}`;evidence.appendChild(li)});latestPlan={title:text,answer:data.answer,context:context.map(i=>`${i.topic}: ${i.content}`)}}catch{alert('TripPilot could not reach the service. Please try again.')}finally{button.disabled=false;button.innerHTML='Plan trip <span>→</span>'}});
+document.querySelector('#download-pdf').addEventListener('click',async()=>{if(!latestPlan)return;const control=document.querySelector('#download-pdf');control.disabled=true;control.textContent='Preparing PDF…';try{const res=await fetch('/v1/plan/pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(latestPlan)});if(!res.ok)throw Error();const blob=await res.blob(),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='trippilot-travel-plan.pdf';link.click();URL.revokeObjectURL(url)}catch{alert('Could not create the PDF. Please try again.')}finally{control.disabled=false;control.textContent='⇩ Download plan PDF'}});query.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter')form.requestSubmit()});
