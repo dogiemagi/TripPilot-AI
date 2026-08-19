@@ -3,6 +3,8 @@ from pathlib import Path
 from typing import Annotated
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from .models import RankRequest, TravelRequest
 from .services import compose_answer, detect_intent, get_memories, initialize_db, retrieve, score_candidate, store_memory
@@ -17,6 +19,13 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="TripPilot AI", version="0.1.0", lifespan=lifespan)
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
+@app.get("/", include_in_schema=False)
+def dashboard():
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/health")
