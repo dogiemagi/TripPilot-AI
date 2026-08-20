@@ -35,3 +35,5 @@ pytest
 ## Production adapters
 
 Add a provider module for a vision, speech-to-text, video-frame, LLM, weather, or places API. Pass only extracted text/entities into the orchestration flow and keep uploads in memory or temporary storage. The current answer composer is deliberately deterministic, so the service can run without API keys.
+
+Live link: https://trippilot-ai-nc4g.onrender.com/
