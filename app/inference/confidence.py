@@ -61,7 +61,19 @@ class ConfidenceEvaluator:
         clean_text = text.strip()
         low_text = clean_text.lower()
 
-        # 1. Check direct ambiguity patterns
+        # 1. Check direct ambiguity and greeting patterns
+        if re.search(r"^(?:hi|hello|hey|greetings|good\s+(?:morning|afternoon|evening)|howdy|help)\b[\s!.,?]*$", low_text):
+            return IntentResult(
+                intent="general_travel",
+                confidence=0.50,
+                requires_clarification=True,
+                clarification_prompt=(
+                    "Hello! I am your AI Travel Copilot. Where would you like to travel? "
+                    "Share your destination, number of days, budget, and any preferences (such as pure vegetarian food or quiet places) to get started."
+                ),
+                rationale="Greeting detected without destination or travel parameters; prompting for trip details.",
+            )
+
         for pat, clarification_msg in CLARIFICATION_PATTERNS:
             if re.search(pat, low_text, re.IGNORECASE):
                 return IntentResult(
@@ -71,6 +83,7 @@ class ConfidenceEvaluator:
                     clarification_prompt=clarification_msg,
                     rationale="Input lacks specific travel entity (flight, hotel, or destination).",
                 )
+
 
         # 2. Extract entities
         extracted: dict[str, str | float] = {}

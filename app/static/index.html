@@ -3,240 +3,480 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TripPilot AI · AI-Native Travel Commerce Platform</title>
-    <meta name="description" content="AI-native travel planning and conversational commerce platform with itemized budgeting, live provider integration, and multi-agent recommendations.">
+    <title>TripPilot AI · Enterprise Travel Commerce Platform</title>
+    <meta name="description" content="AI-native travel planning and conversational commerce platform with deterministic itemized budgeting, live provider integration, and multi-agent recommendations.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
-    <main class="shell">
+    <!-- AMBIENT BACKGROUND LIGHTING -->
+    <div class="ambient-glow glow-top"></div>
+    <div class="ambient-glow glow-bottom"></div>
+
+    <div class="shell">
       <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <a class="brand" href="/" aria-label="TripPilot home">
-          <span class="brand-mark">✦</span>
-          <span>TripPilot <b>AI</b><small>AI-Native Travel Commerce</small></span>
-        </a>
-
-        <div class="section-label">✦ &nbsp;CURATED TRIP SCENARIOS</div>
-        <nav class="scenario-list">
-          <button class="scenario active" data-query="I'm going to Hyderabad for 4 days with a ₹20,000 budget. I prefer vegetarian food and less crowded places.">
-            <i>🕌</i>
-            <span>
-              <b>Hyderabad under ₹20k</b>
-              <small>Veg dining · Low crowds · 4 days</small>
-            </span>
-          </button>
-          <button class="scenario" data-query="Plan me a 3-day Paris itinerary near the Eiffel Tower under ₹80,000.">
-            <i>🗼</i>
-            <span>
-              <b>Paris Explorer</b>
-              <small>Culture · Museums · 3 days</small>
-            </span>
-          </button>
-          <button class="scenario" data-query="Find a quiet beach escape in Goa with vegetarian food for 4 days.">
-            <i>🌴</i>
-            <span>
-              <b>Goa Slow Travel</b>
-              <small>Secluded beaches · Heritage walk</small>
-            </span>
-          </button>
-          <button class="scenario" data-query="Plan a 5-day Dubai trip under ₹80,000 with flights from Mumbai.">
-            <i>✈️</i>
-            <span>
-              <b>Dubai Highlights</b>
-              <small>Downtown · Emirates flight · 5 days</small>
-            </span>
-          </button>
-        </nav>
-
-        <div class="section-label upload-label">▰ &nbsp;ATTACH TRAVEL CONTEXT</div>
-        <div class="quick-upload">
-          <button type="button" data-upload="image">▧ Add Photo</button>
-          <button type="button" data-upload="audio">◉ Voice / Audio</button>
-          <button type="button" data-upload="video">▸ Video Clip</button>
+      <aside class="sidebar" id="sidebar">
+        <!-- BRAND -->
+        <div class="brand-wrap">
+          <a class="brand" href="/" aria-label="TripPilot home">
+            <div class="brand-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
+              </svg>
+            </div>
+            <div class="brand-meta">
+              <div class="brand-name">TripPilot <span class="brand-pill">AI</span></div>
+              <div class="brand-tag">Travel Commerce Platform</div>
+            </div>
+          </a>
         </div>
-        <label class="dropzone" for="file-input">
-          <span>⌁</span>
-          <b>Drop Travel Media</b>
-          <small>Photo · Boarding pass · Audio · Video</small>
-          <input id="file-input" type="file" accept="image/*,audio/*,video/*" hidden>
-        </label>
-        <div id="upload-status" class="upload-status">No media attached</div>
 
-        <!-- TRIP CART & PREFERENCES SUMMARY -->
-        <div class="system-card">
-          <span>Memory & Prefs</span>
-          <b id="pref-status">Vegetarian · Low Crowds</b>
-          <span>Budget Engine</span>
-          <b>100% Deterministic</b>
-          <span>Multi-Agent</span>
-          <b>Active (5 Agents)</b>
+        <!-- ENGINE STATUS PILL -->
+        <div class="engine-status-card">
+          <span class="status-indicator-dot pulse"></span>
+          <span class="status-text">Multi-Agent Engine</span>
+          <span class="status-badge">Active</span>
+        </div>
+
+        <!-- PREFERENCES ACCORDION -->
+        <div class="sidebar-block">
+          <div class="block-header">
+            <span class="block-title">PREFERENCES</span>
+            <button type="button" class="btn-text" id="reset-prefs">Reset</button>
+          </div>
+
+          <div class="pref-field">
+            <label class="pref-caption">Dietary Vibe</label>
+            <div class="pref-selector" id="diet-toggles">
+              <button type="button" class="pref-btn active" data-diet="vegetarian">Pure Veg</button>
+              <button type="button" class="pref-btn" data-diet="vegan">Vegan</button>
+              <button type="button" class="pref-btn" data-diet="any">Any</button>
+            </div>
+          </div>
+
+          <div class="pref-field" style="margin-top:10px;">
+            <label class="pref-caption">Crowd Density</label>
+            <div class="pref-selector" id="crowd-toggles">
+              <button type="button" class="pref-btn active" data-crowd="low_crowds">Quiet</button>
+              <button type="button" class="pref-btn" data-crowd="moderate">Balanced</button>
+              <button type="button" class="pref-btn" data-crowd="any">Popular</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CURATED TRIP SCENARIOS (NOT CLICKED BY DEFAULT) -->
+        <div class="sidebar-block" style="flex:1;">
+          <div class="block-header">
+            <span class="block-title">CURATED SCENARIOS</span>
+            <span class="block-badge">1-Click</span>
+          </div>
+
+          <div class="scenario-stack">
+            <!-- Notice: no 'active' class on page load -->
+            <button class="scenario-item" data-query="I'm going to Hyderabad for 4 days with a ₹20,000 budget. I prefer vegetarian food and less crowded places.">
+              <div class="scenario-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.85M19 21V10.85M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path>
+                </svg>
+              </div>
+              <div class="scenario-details">
+                <div class="sc-heading">Hyderabad Explorer</div>
+                <div class="sc-tags">
+                  <span class="sc-tag accent">₹20k Budget</span>
+                  <span class="sc-tag">4 Days</span>
+                  <span class="sc-tag veg">Veg</span>
+                </div>
+              </div>
+            </button>
+
+            <button class="scenario-item" data-query="Plan me a 3-day Paris itinerary near the Eiffel Tower under ₹80,000.">
+              <div class="scenario-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l-7 19h14l-7-19zM12 2v19M7 16h10M9 11h6"></path>
+                </svg>
+              </div>
+              <div class="scenario-details">
+                <div class="sc-heading">Parisian Culture</div>
+                <div class="sc-tags">
+                  <span class="sc-tag accent">₹80k Budget</span>
+                  <span class="sc-tag">3 Days</span>
+                  <span class="sc-tag">Museums</span>
+                </div>
+              </div>
+            </button>
+
+            <button class="scenario-item" data-query="Find a quiet beach escape in Goa with vegetarian food for 4 days.">
+              <div class="scenario-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 18v-8M17 14l-5-4-5 4M19 6c-1.5 0-3 1-4 2.5-1-1.5-2.5-2.5-4-2.5-1.5 0-3 1-4 2.5V18h16V8.5C18 7 16.5 6 15 6z"></path>
+                </svg>
+              </div>
+              <div class="scenario-details">
+                <div class="sc-heading">South Goa Slow Travel</div>
+                <div class="sc-tags">
+                  <span class="sc-tag accent">₹25k Budget</span>
+                  <span class="sc-tag">4 Days</span>
+                  <span class="sc-tag">Secluded</span>
+                </div>
+              </div>
+            </button>
+
+            <button class="scenario-item" data-query="Plan a 5-day Dubai trip under ₹80,000 with flights from Mumbai.">
+              <div class="scenario-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                </svg>
+              </div>
+              <div class="scenario-details">
+                <div class="sc-heading">Dubai Highlights</div>
+                <div class="sc-tags">
+                  <span class="sc-tag accent">₹80k Budget</span>
+                  <span class="sc-tag">5 Days</span>
+                  <span class="sc-tag">Downtown</span>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- ATTACH TRAVEL CONTEXT -->
+        <div class="sidebar-block">
+          <div class="block-header">
+            <span class="block-title">ATTACH CONTEXT</span>
+            <span class="block-badge">Multimodal</span>
+          </div>
+
+          <div class="quick-media-row">
+            <button type="button" class="btn-media" data-upload="image">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              Photo
+            </button>
+            <button type="button" class="btn-media" data-upload="audio">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+              Voice
+            </button>
+            <button type="button" class="btn-media" data-upload="video">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+              Video
+            </button>
+          </div>
+
+          <label class="dropzone" for="file-input" id="dropzone-box">
+            <div class="dz-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <div class="dz-label">Upload Hotel Voucher or Voice Note</div>
+            <div class="dz-hint">PNG, JPG, MP3, MP4 up to 25MB</div>
+            <input id="file-input" type="file" accept="image/*,audio/*,video/*" hidden>
+          </label>
+          <div id="upload-status" class="upload-tag" hidden></div>
+        </div>
+
+        <!-- FOOTER METRICS -->
+        <div class="sidebar-footer">
+          <div class="foot-metric"><span>Math Engine:</span> <b>100% Deterministic</b></div>
+          <div class="foot-metric"><span>RAG Index:</span> <b>TF-IDF + BM25 Hybrid</b></div>
         </div>
       </aside>
 
       <!-- MAIN WORKSPACE -->
       <section class="workspace">
+        <!-- TOPBAR -->
         <header class="topbar">
-          <div>
-            <h1>AI-Native Travel Copilot</h1>
-            <p>Itemized budgeting · Live provider recommendations · Conversational commerce</p>
+          <div class="topbar-main">
+            <button class="menu-toggle" id="sidebar-toggle" aria-label="Toggle navigation">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <div class="topbar-title-block">
+              <h1>Travel Commerce Intelligence</h1>
+              <p>AI-Native Multi-Agent Travel Planning · Transparent Itemized Ledger · Live Provider Recommendations</p>
+            </div>
           </div>
-          <div class="top-actions">
-            <button id="end-chat" type="button" class="secondary-btn">New Trip</button>
-            <div class="pill-badge" id="system-status">● Core Online</div>
+
+          <div class="topbar-actions">
+            <div class="dest-quick-row">
+              <button class="btn-dest-chip" data-dest="Hyderabad">Hyderabad</button>
+              <button class="btn-dest-chip" data-dest="Paris">Paris</button>
+              <button class="btn-dest-chip" data-dest="Goa">Goa</button>
+              <button class="btn-dest-chip" data-dest="Dubai">Dubai</button>
+              <button class="btn-dest-chip" data-dest="Chennai">Chennai</button>
+            </div>
+
+            <div class="action-divider"></div>
+
+            <button id="end-chat" type="button" class="btn-action secondary" title="Start a fresh journey">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+              New Trip
+            </button>
+
+            <button id="topbar-pdf-btn" type="button" class="btn-action primary" title="Export PDF plan" hidden>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export PDF
+            </button>
           </div>
         </header>
 
-        <div class="content">
-          <!-- QUICK MODIFICATION CHIPS -->
-          <div class="quick-chips" id="quick-chips">
-            <span class="chips-label">Quick Actions:</span>
-            <button class="chip" data-action="Make it cheaper.">📉 Make it cheaper</button>
-            <button class="chip" data-action="Keep the hotel but change the flight.">🔄 Change flight only</button>
-            <button class="chip" data-action="What is the baggage limit for IndiGo?">🧳 Check baggage rules</button>
-            <button class="chip" data-action="Find more pure vegetarian dinner options.">🌱 More pure veg food</button>
-          </div>
-
-          <!-- WELCOME HERO -->
-          <div class="welcome" id="welcome">
-            <span class="orb">✦</span>
-            <p class="eyebrow">INTELLIGENT TRAVEL COMMERCE</p>
-            <h2>Plan Your Journey with Exact Itemized Costs</h2>
-            <p>Tell TripPilot where you want to go, your budget, and preferences. Get recommendations with transparent daily costs.</p>
-          </div>
-
-          <!-- CONVERSATION HISTORY -->
-          <section class="conversation" id="conversation" aria-live="polite"></section>
-
-          <!-- RESULT CONTAINER -->
-          <article class="result-card" id="result-card" hidden>
-            <div class="result-meta">
-              <span id="intent-badge">✦ INTENT: ITINERARY PLANNING</span>
-              <span id="model-badge">◈ MULTI-AGENT ORCHESTRATOR</span>
-              <span id="confidence-badge">● 94% confidence</span>
+        <!-- SCROLLABLE CONTENT -->
+        <div class="content-scrollable">
+          <!-- QUICK ACTION PROMPTS -->
+          <div class="quick-prompt-bar">
+            <span class="prompt-bar-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              Quick Actions:
+            </span>
+            <div class="prompt-chips-wrap">
+              <button class="btn-prompt-chip" data-action="Make it cheaper.">Make it cheaper</button>
+              <button class="btn-prompt-chip" data-action="Keep the hotel but change the flight.">Change flight only</button>
+              <button class="btn-prompt-chip" data-action="What is the baggage limit for IndiGo?">Check baggage policies</button>
+              <button class="btn-prompt-chip" data-action="Find more pure vegetarian dinner options.">More pure veg options</button>
+              <button class="btn-prompt-chip" data-action="Suggest low-crowd heritage spots.">Low-crowd attractions</button>
             </div>
+          </div>
 
-            <div class="divider"></div>
+          <!-- WELCOME STATE HERO -->
+          <div class="welcome-view" id="welcome">
+            <div class="welcome-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              AI-NATIVE TRAVEL COMMERCE
+            </div>
+            <h2>Where would you like to travel?</h2>
+            <p class="welcome-sub">
+              Experience seamless conversational travel booking with 100% mathematically transparent itemized budgeting, 
+              live flight and hotel comparisons, and dietary-aware recommendations.
+            </p>
+
+            <div class="feature-card-row">
+              <div class="feature-card">
+                <div class="fc-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <div class="fc-title">Itemized Budget Ledger</div>
+                <div class="fc-text">Every cost item is traceable. Zero LLM math hallucinations.</div>
+              </div>
+
+              <div class="feature-card">
+                <div class="fc-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                </div>
+                <div class="fc-title">Multi-Agent Orchestrator</div>
+                <div class="fc-text">Specialized Flight, Hotel, Activity, Budget, and Itinerary agents.</div>
+              </div>
+
+              <div class="feature-card">
+                <div class="fc-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="fc-title">Grounded Knowledge (RAG)</div>
+                <div class="fc-text">Verified baggage rules, cancellation policies, and destination guides.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONVERSATION STREAM -->
+          <section class="conversation-feed" id="conversation" aria-live="polite"></section>
+
+          <!-- RESULT COCKPIT -->
+          <article class="result-deck" id="result-card" hidden>
+            <!-- HEADER BADGES -->
+            <div class="deck-topbar">
+              <div class="badge-cluster">
+                <span class="meta-tag intent" id="intent-badge">ITINERARY PLANNING</span>
+                <span class="meta-tag model" id="model-badge">MULTI-AGENT ORCHESTRATOR</span>
+                <span class="meta-tag conf" id="confidence-badge">94% CONFIDENCE</span>
+              </div>
+              <div class="deck-top-actions">
+                <button class="btn-deck-export" id="download-pdf">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  Download PDF Itinerary
+                </button>
+              </div>
+            </div>
 
             <!-- OVER-BUDGET ALERT BANNER -->
-            <div class="budget-alert" id="budget-alert" hidden>
-              <div class="alert-header">
-                <b>⚠️ Budget Warning: Plan exceeds your budget ceiling</b>
-                <span id="overage-tag">₹3,700 over</span>
+            <div class="budget-alert-card" id="budget-alert" hidden>
+              <div class="alert-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
               </div>
-              <div class="alert-body" id="reduction-list"></div>
-            </div>
-
-            <!-- TABBED RESULTS: OVERVIEW / BUDGET / SCHEDULE -->
-            <div class="result-tabs">
-              <button class="rtab active" data-tab="overview">✦ Trip Overview</button>
-              <button class="rtab" data-tab="budget">💰 Itemized Budget</button>
-              <button class="rtab" data-tab="daily">📅 Daily Schedule</button>
-              <button class="rtab" data-tab="context">📚 Policies & RAG</button>
-            </div>
-
-            <!-- TAB 1: OVERVIEW & CARDS -->
-            <div class="tab-pane active" id="pane-overview">
-              <h2 id="result-title">Your Personalized Travel Plan</h2>
-              <div id="answer" class="answer"></div>
-
-              <!-- RECOMMENDED FLIGHT / HOTEL / ACTIVITY CARDS -->
-              <div class="recommendations-section">
-                <div class="rec-block" id="flight-block">
-                  <h3>✈️ Recommended Flight</h3>
-                  <div class="card-grid" id="flight-cards"></div>
+              <div class="alert-body-wrap">
+                <div class="alert-title-row">
+                  <b>Budget Warning: Plan exceeds defined budget ceiling</b>
+                  <span class="overage-badge" id="overage-tag">₹3,700 over</span>
                 </div>
-                <div class="rec-block" id="hotel-block">
-                  <h3>🏨 Recommended Accommodation</h3>
-                  <div class="card-grid" id="hotel-cards"></div>
-                </div>
-                <div class="rec-block" id="activity-block">
-                  <h3>🎟 Curated Highlights & Dining</h3>
-                  <div class="card-grid" id="activity-cards"></div>
-                </div>
+                <div class="reduction-options" id="reduction-list"></div>
               </div>
             </div>
 
-            <!-- TAB 2: ITEMIZED BUDGET -->
-            <div class="tab-pane" id="pane-budget">
-              <h3>Transparent Itemized Budget Breakdown</h3>
-              <p class="section-desc">Every rupee is traceable to a specific item. Arithmetic is 100% deterministic.</p>
-              
-              <div class="budget-summary-bar">
-                <div class="b-stat">
-                  <small>Budget Ceiling</small>
-                  <b id="stat-ceiling">₹20,000</b>
+            <!-- TABS -->
+            <div class="deck-nav-tabs" role="tablist">
+              <button class="deck-tab active" data-tab="overview">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Trip Overview
+              </button>
+              <button class="deck-tab" data-tab="budget">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                Itemized Budget
+              </button>
+              <button class="deck-tab" data-tab="daily">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Daily Schedule
+              </button>
+              <button class="deck-tab" data-tab="context">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                Policies & RAG
+              </button>
+            </div>
+
+            <!-- PANE 1: TRIP OVERVIEW & RECOMMENDATIONS -->
+            <div class="deck-pane active" id="pane-overview">
+              <div class="deck-summary-text" id="answer"></div>
+
+              <div class="recommendations-container">
+                <!-- FLIGHTS -->
+                <div class="rec-group">
+                  <div class="rec-group-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg>
+                    Recommended Flights
+                  </div>
+                  <div class="cards-grid" id="flight-cards"></div>
                 </div>
-                <div class="b-stat">
-                  <small>Grand Total</small>
-                  <b id="stat-total">₹18,400</b>
+
+                <!-- HOTELS -->
+                <div class="rec-group">
+                  <div class="rec-group-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.85M19 21V10.85M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path></svg>
+                    Recommended Accommodations
+                  </div>
+                  <div class="cards-grid" id="hotel-cards"></div>
                 </div>
-                <div class="b-stat">
-                  <small>Remaining Buffer</small>
-                  <b id="stat-remaining" class="positive">₹1,600</b>
+
+                <!-- ACTIVITIES & DINING -->
+                <div class="rec-group">
+                  <div class="rec-group-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    Curated Highlights & Dining
+                  </div>
+                  <div class="cards-grid" id="activity-cards"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANE 2: ITEMIZED BUDGET CONSOLE -->
+            <div class="deck-pane" id="pane-budget">
+              <div class="pane-headline">
+                <h3>Itemized Financial Ledger</h3>
+                <p>Calculated 100% deterministically from structured travel rates. Zero LLM math hallucinations.</p>
+              </div>
+
+              <!-- KPI SUMMARY CARDS -->
+              <div class="kpi-grid">
+                <div class="kpi-box">
+                  <div class="kpi-tag">Budget Ceiling</div>
+                  <div class="kpi-num" id="stat-ceiling">₹20,000</div>
+                  <div class="kpi-sub">Target Expense Limit</div>
+                </div>
+                <div class="kpi-box highlight">
+                  <div class="kpi-tag">Grand Total Estimated</div>
+                  <div class="kpi-num highlight" id="stat-total">₹18,400</div>
+                  <div class="kpi-sub">All Categories Subtotaled</div>
+                </div>
+                <div class="kpi-box">
+                  <div class="kpi-tag">Remaining Buffer</div>
+                  <div class="kpi-num positive" id="stat-remaining">₹1,600</div>
+                  <div class="kpi-sub" id="stat-remaining-sub">Within Target Budget</div>
                 </div>
               </div>
 
-              <div class="budget-table-wrap">
-                <table class="budget-table">
+              <!-- FINANCIAL TABLE -->
+              <div class="table-wrap">
+                <table class="financial-table">
                   <thead>
                     <tr>
-                      <th>Category</th>
-                      <th>Line Items</th>
-                      <th>Qty</th>
-                      <th>Unit Price</th>
-                      <th>Subtotal</th>
+                      <th style="width:20%;">Category</th>
+                      <th style="width:40%;">Item Description & Notes</th>
+                      <th style="width:10%; text-align:center;">Qty</th>
+                      <th style="width:15%; text-align:right;">Unit Price</th>
+                      <th style="width:15%; text-align:right;">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody id="budget-rows"></tbody>
                   <tfoot>
-                    <tr class="tfoot-row">
-                      <td colspan="4"><b>GRAND TOTAL</b></td>
-                      <td id="table-grand-total"><b>₹18,400</b></td>
+                    <tr class="table-footer-row">
+                      <td colspan="4"><b>TOTAL ITINERARY EXPENSE</b></td>
+                      <td id="table-grand-total" style="text-align:right;"><b>₹18,400</b></td>
                     </tr>
                   </tfoot>
                 </table>
               </div>
 
-              <h4 style="margin-top:24px;">Daily Budget Allocation</h4>
-              <div class="daily-grid" id="daily-budget-cards"></div>
+              <h4 style="margin:24px 0 12px; font-size:14px; color:#93c5fd;">Daily Cost Distribution</h4>
+              <div class="daily-tiles-row" id="daily-budget-cards"></div>
             </div>
 
-            <!-- TAB 3: DAILY SCHEDULE -->
-            <div class="tab-pane" id="pane-daily">
-              <h3>Day-by-Day Schedule</h3>
-              <div class="itinerary-timeline" id="itinerary-timeline"></div>
+            <!-- PANE 3: DAILY SCHEDULE TIMELINE -->
+            <div class="deck-pane" id="pane-daily">
+              <div class="pane-headline">
+                <h3>Time-Optimized Daily Schedule</h3>
+                <p>Conflict-free daily scheduling balancing anchor sightseeing, dining, and transfer buffers.</p>
+              </div>
+              <div class="timeline-stack" id="itinerary-timeline"></div>
             </div>
 
-            <!-- TAB 4: RAG & EVIDENCE -->
-            <div class="tab-pane" id="pane-context">
-              <h3>Retrieved Policies & Grounding Sources</h3>
-              <ul class="evidence-list" id="evidence-list"></ul>
-            </div>
-
-            <!-- ACTIONS -->
-            <div class="result-actions">
-              <button class="pdf-button" type="button" id="download-pdf">
-                ⇩ Download Official PDF Itinerary & Budget
-              </button>
+            <!-- PANE 4: VERIFIED RAG SOURCES -->
+            <div class="deck-pane" id="pane-context">
+              <div class="pane-headline">
+                <h3>Verified Policies & Destination Grounding</h3>
+                <p>Source citations retrieved from verified airline rules and travel guides.</p>
+              </div>
+              <div class="evidence-stack" id="evidence-list"></div>
             </div>
           </article>
         </div>
 
         <!-- COMPOSER BAR -->
-        <form class="composer" id="query-form">
-          <button class="mic" type="button" id="mic-button" title="Speak travel query" aria-label="Microphone">◉</button>
-          <div class="input-wrap">
-            <textarea id="query" rows="1" maxlength="4000" placeholder="e.g. Plan a 4-day Hyderabad trip under ₹20,000 with vegetarian food and less crowds…"></textarea>
-            <span class="hint">⌘ Enter</span>
-          </div>
-          <button class="attachment" type="button" id="attachment-button" title="Add Media">＋</button>
-          <button type="submit" id="analyze">Plan Trip <span>→</span></button>
-        </form>
+        <footer class="composer-dock">
+          <form class="composer-form" id="query-form">
+            <button class="btn-voice" type="button" id="mic-button" title="Speak travel query" aria-label="Microphone">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+
+            <div class="input-container">
+              <textarea 
+                id="query" 
+                rows="1" 
+                maxlength="4000" 
+                placeholder="e.g. Plan a 4-day Hyderabad trip under ₹20,000 with vegetarian food and less crowds…"
+              ></textarea>
+              <div class="key-hint">Press <span>⌘ Enter</span> to plan</div>
+            </div>
+
+            <button class="btn-attach" type="button" id="attachment-button" title="Upload Media">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+              </svg>
+            </button>
+
+            <button type="submit" class="btn-submit" id="analyze">
+              <span>Plan Journey</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </form>
+        </footer>
       </section>
-    </main>
+    </div>
 
     <script src="/static/app.js"></script>
   </body>
