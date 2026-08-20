@@ -1,0 +1,58 @@
+[
+  {
+    "id": "policy-indigo-baggage",
+    "category": "airline_policy",
+    "destination": "General",
+    "topic": "IndiGo Domestic Baggage Policy",
+    "content": "IndiGo domestic flights include 15 kg check-in baggage (1 piece) and 7 kg cabin baggage. Additional prepaid baggage is charged at ₹500 per 5 kg block when booked in advance."
+  },
+  {
+    "id": "policy-air-india-baggage",
+    "category": "airline_policy",
+    "destination": "General",
+    "topic": "Air India Baggage & Meals",
+    "content": "Air India domestic economy fares include 25 kg check-in baggage, 7 kg hand luggage, and complimentary hot meals on flights over 60 minutes."
+  },
+  {
+    "id": "policy-hotel-cancellation",
+    "category": "hotel_policy",
+    "destination": "General",
+    "topic": "Standard Hotel Cancellation Terms",
+    "content": "Flexible rate bookings permit free cancellation up to 24-48 hours before check-in (12:00 PM local time). Non-refundable promo rates forfeit the initial deposit upon cancellation."
+  },
+  {
+    "id": "guide-hyderabad-veg",
+    "category": "destination_guide",
+    "destination": "Hyderabad",
+    "topic": "Hyderabad Vegetarian Food Guide",
+    "content": "Hyderabad offers world-class vegetarian dining. Top spots include Chutneys (famous for steam dosa and 7 chutneys), Subbayya Gari Hotel (Andhra Bhojanam served on banana leaf with podi and ghee), and Tatva for fine dining."
+  },
+  {
+    "id": "guide-hyderabad-heritage",
+    "category": "destination_guide",
+    "destination": "Hyderabad",
+    "topic": "Hyderabad Low-Crowd Heritage Exploration",
+    "content": "For peaceful sightseeing, visit Qutb Shahi Tombs at 8:30 AM before tourist crowds arrive. Paigah Tombs near Pisal Banda feature intricate stucco mosaic work with virtually zero tourist crowds."
+  },
+  {
+    "id": "guide-paris-museums",
+    "category": "destination_guide",
+    "destination": "Paris",
+    "topic": "Paris Museum Reservations",
+    "content": "Louvre Museum and Musée d'Orsay require mandatory advance timed-entry reservations. Paris Museum Pass allows skip-the-line access across 50 monuments."
+  },
+  {
+    "id": "guide-goa-transit",
+    "category": "destination_guide",
+    "destination": "Goa",
+    "topic": "Goa Transit & Quiet Spots",
+    "content": "South Goa (Benaulim, Agonda, Arossim) provides secluded beaches and low crowd density compared to North Goa. Renting a self-drive scooter (₹400/day) or prepaid airport taxi is the most reliable transit."
+  },
+  {
+    "id": "guide-dubai-visa",
+    "category": "travel_requirement",
+    "destination": "Dubai",
+    "topic": "UAE Visa Requirements",
+    "content": "Indian passport holders with a valid US, UK, or EU residence visa can obtain a 14-day Visa on Arrival at Dubai International Airport (DXB). Otherwise, a 30-day tourist eVisa must be arranged in advance."
+  }
+]

@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TripPilot AI · Multimodal Travel Agent</title>
+    <title>TripPilot AI · AI-Native Travel Commerce Platform</title>
+    <meta name="description" content="AI-native travel planning and conversational commerce platform with itemized budgeting, live provider integration, and multi-agent recommendations.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -11,42 +12,232 @@
   </head>
   <body>
     <main class="shell">
+      <!-- SIDEBAR -->
       <aside class="sidebar">
-        <a class="brand" href="/" aria-label="TripPilot home"><span class="brand-mark">✦</span><span>TripPilot <b>AI</b><small>v1.0 · Render ready</small></span></a>
-        <div class="section-label">✦ &nbsp;TRIP SCENARIOS</div>
+        <a class="brand" href="/" aria-label="TripPilot home">
+          <span class="brand-mark">✦</span>
+          <span>TripPilot <b>AI</b><small>AI-Native Travel Commerce</small></span>
+        </a>
+
+        <div class="section-label">✦ &nbsp;CURATED TRIP SCENARIOS</div>
         <nav class="scenario-list">
-          <button class="scenario active" data-query="Plan me a 3-day Paris itinerary near the Eiffel Tower."><i>🗼</i><span><b>Paris Explorer</b><small>Culture · food · 3 days</small></span></button>
-          <button class="scenario" data-query="Plan a five-day Dubai trip under ₹80,000."><i>✈️</i><span><b>Dubai under ₹80k</b><small>Budget · 5-day itinerary</small></span></button>
-          <button class="scenario" data-query="Find a quiet beach escape in Goa with vegetarian food."><i>🌴</i><span><b>Goa Slow Travel</b><small>Beaches · vegetarian-friendly</small></span></button>
-          <button class="scenario" data-query="Suggest the best hotels close to central Paris attractions."><i>🏨</i><span><b>Stay Smart</b><small>Hotels · decision score</small></span></button>
-          <button class="scenario" data-query="What is the weather like and what should I pack for a trip?"><i>☀️</i><span><b>Pack & Prepare</b><small>Weather · travel essentials</small></span></button>
+          <button class="scenario active" data-query="I'm going to Hyderabad for 4 days with a ₹20,000 budget. I prefer vegetarian food and less crowded places.">
+            <i>🕌</i>
+            <span>
+              <b>Hyderabad under ₹20k</b>
+              <small>Veg dining · Low crowds · 4 days</small>
+            </span>
+          </button>
+          <button class="scenario" data-query="Plan me a 3-day Paris itinerary near the Eiffel Tower under ₹80,000.">
+            <i>🗼</i>
+            <span>
+              <b>Paris Explorer</b>
+              <small>Culture · Museums · 3 days</small>
+            </span>
+          </button>
+          <button class="scenario" data-query="Find a quiet beach escape in Goa with vegetarian food for 4 days.">
+            <i>🌴</i>
+            <span>
+              <b>Goa Slow Travel</b>
+              <small>Secluded beaches · Heritage walk</small>
+            </span>
+          </button>
+          <button class="scenario" data-query="Plan a 5-day Dubai trip under ₹80,000 with flights from Mumbai.">
+            <i>✈️</i>
+            <span>
+              <b>Dubai Highlights</b>
+              <small>Downtown · Emirates flight · 5 days</small>
+            </span>
+          </button>
         </nav>
-        <div class="section-label upload-label">▰ &nbsp;ADD CONTEXT</div>
-        <div class="quick-upload"><button type="button" data-upload="image">▧ Add photo</button><button type="button" data-upload="audio">◉ Upload audio</button><button type="button" data-upload="video">▸ Add video</button></div>
-        <label class="dropzone" for="file-input"><span>⌁</span><b>Drop travel media</b><small>Photo · audio · video</small><input id="file-input" type="file" accept="image/*,audio/*,video/*" hidden></label>
+
+        <div class="section-label upload-label">▰ &nbsp;ATTACH TRAVEL CONTEXT</div>
+        <div class="quick-upload">
+          <button type="button" data-upload="image">▧ Add Photo</button>
+          <button type="button" data-upload="audio">◉ Voice / Audio</button>
+          <button type="button" data-upload="video">▸ Video Clip</button>
+        </div>
+        <label class="dropzone" for="file-input">
+          <span>⌁</span>
+          <b>Drop Travel Media</b>
+          <small>Photo · Boarding pass · Audio · Video</small>
+          <input id="file-input" type="file" accept="image/*,audio/*,video/*" hidden>
+        </label>
         <div id="upload-status" class="upload-status">No media attached</div>
-        <div class="system-card"><span>Travel memory</span><b>Active</b><span>Knowledge base</span><b>Local RAG</b><span>Inference</span><b>Confidence-aware</b></div>
+
+        <!-- TRIP CART & PREFERENCES SUMMARY -->
+        <div class="system-card">
+          <span>Memory & Prefs</span>
+          <b id="pref-status">Vegetarian · Low Crowds</b>
+          <span>Budget Engine</span>
+          <b>100% Deterministic</b>
+          <span>Multi-Agent</span>
+          <b>Active (5 Agents)</b>
+        </div>
       </aside>
+
+      <!-- MAIN WORKSPACE -->
       <section class="workspace">
-        <header class="topbar"><div><h1>Multimodal Travel Intelligence</h1><p>Plan, explore, and decide with context-aware AI.</p></div><label class="router">Route <select aria-label="Domain router"><option>Auto-detect</option><option>Itinerary</option><option>Hotels</option><option>Food</option></select></label></header>
+        <header class="topbar">
+          <div>
+            <h1>AI-Native Travel Copilot</h1>
+            <p>Itemized budgeting · Live provider recommendations · Conversational commerce</p>
+          </div>
+          <div class="top-actions">
+            <button id="end-chat" type="button" class="secondary-btn">New Trip</button>
+            <div class="pill-badge" id="system-status">● Core Online</div>
+          </div>
+        </header>
+
         <div class="content">
-          <div class="mode-tabs" role="tablist"><button class="mode-tab active" data-mode="text" role="tab">⌁ Text</button><button class="mode-tab" data-mode="audio" role="tab">◉ Voice</button><button class="mode-tab" data-mode="image" role="tab">▧ Image</button><button class="mode-tab" data-mode="video" role="tab">▸ Video</button></div>
-          <div class="mode-help" id="mode-help">Ask a travel question in text. Add context from the sidebar whenever you need it.</div>
-          <div class="welcome" id="welcome"><span class="orb">✦</span><p class="eyebrow">YOUR TRAVEL COPILOT</p><h2>Where will curiosity take you?</h2><p>Ask about a destination, add media, or start with a trip scenario.</p></div>
+          <!-- QUICK MODIFICATION CHIPS -->
+          <div class="quick-chips" id="quick-chips">
+            <span class="chips-label">Quick Actions:</span>
+            <button class="chip" data-action="Make it cheaper.">📉 Make it cheaper</button>
+            <button class="chip" data-action="Keep the hotel but change the flight.">🔄 Change flight only</button>
+            <button class="chip" data-action="What is the baggage limit for IndiGo?">🧳 Check baggage rules</button>
+            <button class="chip" data-action="Find more pure vegetarian dinner options.">🌱 More pure veg food</button>
+          </div>
+
+          <!-- WELCOME HERO -->
+          <div class="welcome" id="welcome">
+            <span class="orb">✦</span>
+            <p class="eyebrow">INTELLIGENT TRAVEL COMMERCE</p>
+            <h2>Plan Your Journey with Exact Itemized Costs</h2>
+            <p>Tell TripPilot where you want to go, your budget, and preferences. Get recommendations with transparent daily costs.</p>
+          </div>
+
+          <!-- CONVERSATION HISTORY -->
           <section class="conversation" id="conversation" aria-live="polite"></section>
+
+          <!-- RESULT CONTAINER -->
           <article class="result-card" id="result-card" hidden>
-            <div class="result-meta"><span id="intent-badge">✦ INTENT: GENERAL</span><span id="model-badge">◈ MODEL: trippilot-core</span><span id="confidence-badge">● 0% confidence</span></div>
+            <div class="result-meta">
+              <span id="intent-badge">✦ INTENT: ITINERARY PLANNING</span>
+              <span id="model-badge">◈ MULTI-AGENT ORCHESTRATOR</span>
+              <span id="confidence-badge">● 94% confidence</span>
+            </div>
+
             <div class="divider"></div>
-            <p class="eyebrow">GROUNDED TRAVEL INTELLIGENCE</p>
-            <h2 id="result-title">Your travel brief</h2>
-            <div id="answer" class="answer"></div>
-            <section class="evidence"><b>◈ RETRIEVED CONTEXT</b><ul id="evidence-list"></ul></section>
-            <div class="result-actions"><button class="details" type="button">▸ View decision and confidence metadata</button><button class="pdf-button" type="button" id="download-pdf" hidden>⇩ Download final plan PDF</button></div>
+
+            <!-- OVER-BUDGET ALERT BANNER -->
+            <div class="budget-alert" id="budget-alert" hidden>
+              <div class="alert-header">
+                <b>⚠️ Budget Warning: Plan exceeds your budget ceiling</b>
+                <span id="overage-tag">₹3,700 over</span>
+              </div>
+              <div class="alert-body" id="reduction-list"></div>
+            </div>
+
+            <!-- TABBED RESULTS: OVERVIEW / BUDGET / SCHEDULE -->
+            <div class="result-tabs">
+              <button class="rtab active" data-tab="overview">✦ Trip Overview</button>
+              <button class="rtab" data-tab="budget">💰 Itemized Budget</button>
+              <button class="rtab" data-tab="daily">📅 Daily Schedule</button>
+              <button class="rtab" data-tab="context">📚 Policies & RAG</button>
+            </div>
+
+            <!-- TAB 1: OVERVIEW & CARDS -->
+            <div class="tab-pane active" id="pane-overview">
+              <h2 id="result-title">Your Personalized Travel Plan</h2>
+              <div id="answer" class="answer"></div>
+
+              <!-- RECOMMENDED FLIGHT / HOTEL / ACTIVITY CARDS -->
+              <div class="recommendations-section">
+                <div class="rec-block" id="flight-block">
+                  <h3>✈️ Recommended Flight</h3>
+                  <div class="card-grid" id="flight-cards"></div>
+                </div>
+                <div class="rec-block" id="hotel-block">
+                  <h3>🏨 Recommended Accommodation</h3>
+                  <div class="card-grid" id="hotel-cards"></div>
+                </div>
+                <div class="rec-block" id="activity-block">
+                  <h3>🎟 Curated Highlights & Dining</h3>
+                  <div class="card-grid" id="activity-cards"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: ITEMIZED BUDGET -->
+            <div class="tab-pane" id="pane-budget">
+              <h3>Transparent Itemized Budget Breakdown</h3>
+              <p class="section-desc">Every rupee is traceable to a specific item. Arithmetic is 100% deterministic.</p>
+              
+              <div class="budget-summary-bar">
+                <div class="b-stat">
+                  <small>Budget Ceiling</small>
+                  <b id="stat-ceiling">₹20,000</b>
+                </div>
+                <div class="b-stat">
+                  <small>Grand Total</small>
+                  <b id="stat-total">₹18,400</b>
+                </div>
+                <div class="b-stat">
+                  <small>Remaining Buffer</small>
+                  <b id="stat-remaining" class="positive">₹1,600</b>
+                </div>
+              </div>
+
+              <div class="budget-table-wrap">
+                <table class="budget-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Line Items</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="budget-rows"></tbody>
+                  <tfoot>
+                    <tr class="tfoot-row">
+                      <td colspan="4"><b>GRAND TOTAL</b></td>
+                      <td id="table-grand-total"><b>₹18,400</b></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <h4 style="margin-top:24px;">Daily Budget Allocation</h4>
+              <div class="daily-grid" id="daily-budget-cards"></div>
+            </div>
+
+            <!-- TAB 3: DAILY SCHEDULE -->
+            <div class="tab-pane" id="pane-daily">
+              <h3>Day-by-Day Schedule</h3>
+              <div class="itinerary-timeline" id="itinerary-timeline"></div>
+            </div>
+
+            <!-- TAB 4: RAG & EVIDENCE -->
+            <div class="tab-pane" id="pane-context">
+              <h3>Retrieved Policies & Grounding Sources</h3>
+              <ul class="evidence-list" id="evidence-list"></ul>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="result-actions">
+              <button class="pdf-button" type="button" id="download-pdf">
+                ⇩ Download Official PDF Itinerary & Budget
+              </button>
+            </div>
           </article>
         </div>
-        <form class="composer" id="query-form"><button class="mic" type="button" id="mic-button" title="Ask with microphone" aria-label="Ask with microphone" hidden>◉</button><div class="input-wrap"><textarea id="query" rows="1" maxlength="4000" placeholder="Ask about your next journey, a hotel, or a landmark…"></textarea><span class="hint">⌘ Enter</span></div><button class="attachment" type="button" id="attachment-button" title="Add media">＋</button><button type="submit" id="analyze">Plan trip <span>→</span></button></form>
+
+        <!-- COMPOSER BAR -->
+        <form class="composer" id="query-form">
+          <button class="mic" type="button" id="mic-button" title="Speak travel query" aria-label="Microphone">◉</button>
+          <div class="input-wrap">
+            <textarea id="query" rows="1" maxlength="4000" placeholder="e.g. Plan a 4-day Hyderabad trip under ₹20,000 with vegetarian food and less crowds…"></textarea>
+            <span class="hint">⌘ Enter</span>
+          </div>
+          <button class="attachment" type="button" id="attachment-button" title="Add Media">＋</button>
+          <button type="submit" id="analyze">Plan Trip <span>→</span></button>
+        </form>
       </section>
     </main>
+
     <script src="/static/app.js"></script>
   </body>
 </html>

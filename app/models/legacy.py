@@ -1,6 +1,16 @@
 from typing import Literal
-
 from pydantic import BaseModel, Field
+
+from app.models.budget import ItemizedBudget
+
+
+class Candidate(BaseModel):
+    name: str
+    price_score: float = Field(ge=0, le=1)
+    location_score: float = Field(ge=0, le=1)
+    rating_score: float = Field(ge=0, le=1)
+    preference_score: float = Field(ge=0, le=1)
+    amenities_score: float = Field(ge=0, le=1)
 
 
 class TravelerProfile(BaseModel):
@@ -13,17 +23,9 @@ class TravelerProfile(BaseModel):
 class TravelRequest(BaseModel):
     user_id: str = Field(min_length=1, max_length=100)
     text: str = Field(min_length=1, max_length=4000)
+    trip_id: str | None = None
     profile: TravelerProfile | None = None
     detected_landmark: str | None = None
-
-
-class Candidate(BaseModel):
-    name: str
-    price_score: float = Field(ge=0, le=1)
-    location_score: float = Field(ge=0, le=1)
-    rating_score: float = Field(ge=0, le=1)
-    preference_score: float = Field(ge=0, le=1)
-    amenities_score: float = Field(ge=0, le=1)
 
 
 class RankRequest(BaseModel):
@@ -33,4 +35,9 @@ class RankRequest(BaseModel):
 class PlanPdfRequest(BaseModel):
     title: str = Field(min_length=1, max_length=160)
     answer: str = Field(min_length=1, max_length=12000)
-    context: list[str] = Field(default_factory=list, max_length=8)
+    context: list[str] = Field(default_factory=list, max_length=12)
+    budget: ItemizedBudget | None = None
+
+
+class SessionEndRequest(BaseModel):
+    session_id: str = Field(min_length=8, max_length=100)

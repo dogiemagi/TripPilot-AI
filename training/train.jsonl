@@ -1,0 +1,20 @@
+{"text": "Find me the cheapest direct flight from Chennai to Hyderabad next Friday.", "label": "FLIGHT_SEARCH"}
+{"text": "Are there any IndiGo flights to Goa under 5000 INR?", "label": "FLIGHT_SEARCH"}
+{"text": "Looking for business class tickets from Mumbai to Dubai with Emirates.", "label": "FLIGHT_SEARCH"}
+{"text": "Show me 4-star hotels in Hitec City Hyderabad with pure vegetarian breakfast.", "label": "HOTEL_SEARCH"}
+{"text": "Find a quiet boutique beach resort in South Goa with free cancellation.", "label": "HOTEL_SEARCH"}
+{"text": "Recommend romantic hotels in Paris near the Eiffel Tower with Seine river views.", "label": "HOTEL_SEARCH"}
+{"text": "What are the top things to do in Hyderabad with low crowds?", "label": "ACTIVITY_SEARCH"}
+{"text": "Find authentic Andhra vegetarian thali restaurants around Banjara Hills.", "label": "ACTIVITY_SEARCH"}
+{"text": "Plan a 4-day trip to Hyderabad with a budget of 20,000 rupees.", "label": "ITINERARY_PLANNING"}
+{"text": "Build a 3-day Paris cultural itinerary visiting Louvre and Montmartre.", "label": "ITINERARY_PLANNING"}
+{"text": "Plan a relaxed 5-day holiday in Goa focused on heritage and beaches.", "label": "ITINERARY_PLANNING"}
+{"text": "Make my Hyderabad trip cheaper by choosing budget stays.", "label": "BUDGET_OPTIMIZATION"}
+{"text": "The total is exceeding 25,000 INR. Suggest reductions to bring it under 20,000.", "label": "BUDGET_OPTIMIZATION"}
+{"text": "Add the second hotel to my trip and proceed to review cart.", "label": "BOOKING"}
+{"text": "Select the morning IndiGo flight and lock my booking.", "label": "BOOKING"}
+{"text": "What is the cancellation policy if I cancel 24 hours prior to check-in?", "label": "CANCELLATION"}
+{"text": "Can I get a full refund if my flight is cancelled due to weather?", "label": "CANCELLATION"}
+{"text": "What is the cabin baggage limit on IndiGo domestic flights?", "label": "TRAVEL_POLICY"}
+{"text": "Do Indian citizens need a transit visa for Dubai?", "label": "TRAVEL_POLICY"}
+{"text": "What should I pack for Hyderabad weather in August?", "label": "GENERAL_TRAVEL"}

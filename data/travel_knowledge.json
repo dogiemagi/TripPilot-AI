@@ -1,6 +1,32 @@
 [
-  {"destination": "Paris", "topic": "Eiffel Tower", "content": "The Eiffel Tower is on the Champ de Mars. Nearby areas include Trocadéro, the Seine, and the 7th arrondissement."},
-  {"destination": "Paris", "topic": "Museums", "content": "The Louvre, Musée d'Orsay, and Centre Pompidou are major museums. Advance booking can reduce waiting time."},
-  {"destination": "Goa", "topic": "Travel style", "content": "Goa combines beaches, heritage districts, seafood, and water activities. South Goa is generally quieter than the north."},
-  {"destination": "General", "topic": "Responsible travel", "content": "Use official sources for visas, safety alerts, bookings, and entry requirements; these change frequently."}
+  {
+    "destination": "Paris",
+    "topic": "Eiffel Tower and 7th Arrondissement",
+    "content": "The Eiffel Tower is situated on the Champ de Mars along the Seine. Nearby sights include Trocadéro Gardens, Quai Branly, and Rue Cler market street."
+  },
+  {
+    "destination": "Paris",
+    "topic": "Louvre and Classical Art",
+    "content": "The Louvre Museum houses over 35,000 works of art. Entering via the Carrousel du Louvre underground mall generally has shorter queues than the main Pyramid entrance."
+  },
+  {
+    "destination": "Goa",
+    "topic": "South Goa Slow Travel",
+    "content": "South Goa offers pristine beaches like Palolem and Arossim, Portuguese heritage houses in Chandor, and the colorful Latin Quarter of Fontainhas in Panaji."
+  },
+  {
+    "destination": "Hyderabad",
+    "topic": "Charminar & Golconda Architecture",
+    "content": "Hyderabad blends Qutb Shahi and Asaf Jahi architectural styles. Golconda Fort's acoustic Fateh Darwaza and acoustic whispers at Bala Hissar demonstrate medieval engineering."
+  },
+  {
+    "destination": "Dubai",
+    "topic": "Old Dubai vs Downtown",
+    "content": "Old Dubai features Abra boat rides across Dubai Creek (1 AED) and spice souks in Deira, contrasting with Downtown's Burj Khalifa and Dubai Mall fountains."
+  },
+  {
+    "destination": "General",
+    "topic": "Responsible Travel and Security",
+    "content": "Always verify official consular notices for visa validity, carry travel insurance documents, and store digital copies of passports and bookings in secure cloud storage."
+  }
 ]
