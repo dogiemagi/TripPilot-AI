@@ -23,6 +23,13 @@ def test_ambiguity_clarification_trigger():
     assert res.clarification_prompt is not None
     assert "flight" in res.clarification_prompt.lower() or "hotel" in res.clarification_prompt.lower()
 
+    # When user gives underspecified destination query like "hi i need to go to chennai"
+    res_dest = ConfidenceEvaluator.evaluate_intent("hi i need to go to chennai")
+    assert res_dest.requires_clarification
+    assert "chennai" in res_dest.clarification_prompt.lower()
+    assert "budget" in res_dest.clarification_prompt.lower()
+
+
 
 def test_inference_router_model_selection():
     router = InferenceRouter()

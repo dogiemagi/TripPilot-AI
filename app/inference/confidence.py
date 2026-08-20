@@ -102,6 +102,22 @@ class ConfidenceEvaluator:
         elif scores.get("flight_search", 0) > 0 and scores.get("itinerary_planning", 0) == 0:
             best_intent = "flight_search"
             confidence = min(0.95, 0.65 + scores["flight_search"] * 0.15)
+        elif extracted.get("destination") and not extracted.get("days") and not extracted.get("budget") and len(clean_text.split()) < 10 and scores.get("flight_search", 0) == 0 and scores.get("hotel_search", 0) == 0:
+            dest = extracted["destination"]
+            return IntentResult(
+                intent="itinerary_planning",
+                confidence=0.55,
+                requires_clarification=True,
+                clarification_prompt=(
+                    f"I would love to help you plan your trip to {dest}! To give you an exact itemized budget and customized itinerary, could you let me know:\n"
+                    f"1. How many days will you be visiting {dest}?\n"
+                    f"2. What is your approximate budget (e.g. ₹20,000)?\n"
+                    f"3. Do you have any dietary preferences (such as Pure Vegetarian) or crowd preferences (such as Quiet/Low Crowds)?\n"
+                    f"4. What is your departure city for flights/travel?"
+                ),
+                extracted_entities=extracted,
+                rationale=f"Destination {dest} detected without duration or budget; requesting clarification.",
+            )
         elif extracted.get("destination") and (extracted.get("days") or extracted.get("budget")):
             best_intent = "itinerary_planning"
             confidence = 0.94
@@ -110,6 +126,7 @@ class ConfidenceEvaluator:
         else:
             best_intent = "general_travel"
             confidence = 0.58
+
 
         requires_clarification = confidence < cls.CLARIFICATION_THRESHOLD
         clarification_prompt = None

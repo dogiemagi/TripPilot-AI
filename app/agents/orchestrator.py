@@ -75,13 +75,15 @@ class Orchestrator:
         mods = ContextManager.resolve_conversation_modifications(text, trip)
 
         # 5. Search travel data via Agents
+        default_origin = "Bangalore" if trip.destination.lower() == "chennai" else "Chennai"
         flight_options = await self.flight_agent.find_and_rank_flights(
-            origin=trip.origin or "Chennai",
+            origin=trip.origin or default_origin,
             destination=trip.destination,
             travelers=trip.travelers,
             preference=active_pref,
             budget_limit=trip.budget_ceiling,
         )
+
 
         hotel_options = await self.hotel_agent.find_and_rank_hotels(
             city=trip.destination,
