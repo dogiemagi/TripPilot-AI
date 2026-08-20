@@ -22,14 +22,20 @@ function formatCurrency(val) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
 }
 
+function cleanText(val) {
+  if (!val) return '';
+  return String(val).replace(/\*\*/g, '').replace(/\*/g, '');
+}
+
 function addChat(who, text) {
   const item = document.createElement('div');
   item.className = `chat ${who}`;
   item.innerHTML = `<small>${who === 'user' ? 'YOU' : 'TRIPPILOT AI COPILOT'}</small>`;
-  item.append(document.createTextNode(text));
+  item.append(document.createTextNode(cleanText(text)));
   conversation.append(item);
   item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
 
 // TAB SWITCHING
 $$('.rtab').forEach((tab) => {
@@ -143,7 +149,7 @@ function renderResponseData(data) {
   $('#confidence-badge').textContent = `● ${Math.round(data.confidence * 100)}% CONFIDENCE`;
 
   // Answer
-  $('#answer').textContent = data.answer;
+  $('#answer').textContent = cleanText(data.answer);
 
   // Render Over-Budget Warning if applicable
   const bAlert = $('#budget-alert');

@@ -195,40 +195,41 @@ class Orchestrator:
             pref_notes.append("🕊 Low-crowd heritage spots prioritized")
         pref_header = f" ({' & '.join(pref_notes)})" if pref_notes else ""
 
-        lines.append(f"Here is your personalized **{trip.duration_days}-Day {trip.destination} Travel Plan**{pref_header}:\n")
+        lines.append(f"Here is your personalized {trip.duration_days}-Day {trip.destination} Travel Plan{pref_header}:\n")
 
         if flight:
-            lines.append(f"✈️ **Recommended Flight**: **{flight.airline} {flight.flight_number}** ({flight.origin} → {flight.destination})")
+            lines.append(f"✈️ Recommended Flight: {flight.airline} {flight.flight_number} ({flight.origin} → {flight.destination})")
             lines.append(f"   • Departure: {flight.departure_time} → Arrival: {flight.arrival_time} ({flight.duration}, Non-stop)")
-            lines.append(f"   • Fare: **₹{flight.price.amount:,.0f}** · *Why: {flight.recommendation_reason}*\n")
+            lines.append(f"   • Fare: ₹{flight.price.amount:,.0f} · Why: {flight.recommendation_reason}\n")
 
         if hotel:
-            lines.append(f"🏨 **Recommended Stay**: **{hotel.name}** ({hotel.neighborhood})")
+            lines.append(f"🏨 Recommended Stay: {hotel.name} ({hotel.neighborhood})")
             lines.append(f"   • Rating: {hotel.user_rating}/10 ({hotel.star_rating}★) · {hotel.cancellation_policy}")
-            lines.append(f"   • Total ({hotel.nights} nights): **₹{hotel.price_per_night.amount * hotel.nights:,.0f}** (₹{hotel.price_per_night.amount:,.0f}/night) · *Why: {hotel.recommendation_reason}*\n")
+            lines.append(f"   • Total ({hotel.nights} nights): ₹{hotel.price_per_night.amount * hotel.nights:,.0f} (₹{hotel.price_per_night.amount:,.0f}/night) · Why: {hotel.recommendation_reason}\n")
 
         if activities:
-            lines.append("🎟 **Curated Highlights & Dining**:")
+            lines.append("🎟 Curated Highlights & Dining:")
             for a in activities[:3]:
-                lines.append(f"   • **{a.name}** ({a.category}): ₹{a.price.amount:,.0f} — {a.recommendation_reason}")
+                lines.append(f"   • {a.name} ({a.category}): ₹{a.price.amount:,.0f} — {a.recommendation_reason}")
             lines.append("")
 
         # Transparent Budget Summary
-        lines.append("💰 **Itemized Budget Breakdown**:")
+        lines.append("💰 Itemized Budget Breakdown:")
         for cat in budget.categories:
             cat_icon = {"flight": "✈️", "hotel": "🏨", "food": "🍛", "local_transportation": "🚕", "activities": "🎟", "insurance": "🛡"}.get(cat.category, "📦")
             lines.append(f"   • {cat_icon} {cat.category.replace('_', ' ').title():<22} ₹{cat.subtotal:>8,.0f}")
         lines.append(f"   {'—'*34}")
-        lines.append(f"   • **GRAND TOTAL**             **₹{budget.grand_total:>8,.0f}**")
+        lines.append(f"   • GRAND TOTAL             ₹{budget.grand_total:>8,.0f}")
 
         if budget.budget_ceiling:
             if budget.is_over_budget:
-                lines.append(f"\n⚠️ **Budget Alert**: Plan is **₹{budget.overage_amount:,.0f} over** your ₹{budget.budget_ceiling:,.0f} ceiling.")
+                lines.append(f"\n⚠️ Budget Alert: Plan is ₹{budget.overage_amount:,.0f} over your ₹{budget.budget_ceiling:,.0f} ceiling.")
                 if budget.reduction_suggestions:
-                    lines.append("💡 **Suggested Reductions**:")
+                    lines.append("💡 Suggested Reductions:")
                     for idx, s in enumerate(budget.reduction_suggestions, 1):
-                        lines.append(f"   {idx}. {s.action} → **Save ₹{s.estimated_saving:,.0f}** ({s.description})")
+                        lines.append(f"   {idx}. {s.action} → Save ₹{s.estimated_saving:,.0f} ({s.description})")
             else:
-                lines.append(f"   • **Budget Ceiling**: ₹{budget.budget_ceiling:,.0f} (Remaining Buffer: **₹{budget.remaining_budget:,.0f}**)")
+                lines.append(f"   • Budget Ceiling: ₹{budget.budget_ceiling:,.0f} (Remaining Buffer: ₹{budget.remaining_budget:,.0f})")
 
         return "\n".join(lines)
+
